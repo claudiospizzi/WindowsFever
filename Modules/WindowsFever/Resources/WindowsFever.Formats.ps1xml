@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <ViewDefinitions>
+
+    <View>
+      <Name>Spizzi.PowerShell.Management.FileExplorerNamespace</Name>
+      <ViewSelectedBy>
+        <TypeName>Deserialized.Spizzi.PowerShell.Management.FileExplorerNamespace</TypeName>
+        <TypeName>CSV:Spizzi.PowerShell.Management.FileExplorerNamespace</TypeName>
+        <TypeName>Spizzi.PowerShell.Management.FileExplorerNamespace</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Width>16</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Width>38</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Width>12</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Width>40</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Width>6</Width>
+          </TableColumnHeader>
+          <TableColumnHeader />
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TargetType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TargetValue</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Order</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Icon</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+
+  </ViewDefinitions>
+</Configuration>

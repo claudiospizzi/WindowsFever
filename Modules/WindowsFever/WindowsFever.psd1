@@ -18,7 +18,7 @@
     # CompanyName = ''
 
     # Copyright statement for this module
-    Copyright = 'Copyright (c) 2016 by Claudio Spizzi. Licensed under MIT license.'
+    Copyright = 'Copyright (c) 2017 by Claudio Spizzi. Licensed under MIT license.'
 
     # Description of the functionality provided by this module
     Description = 'PowerShell Module with additional custom functions and cmdlets related to Windows.'
@@ -64,7 +64,11 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    # FunctionsToExport = @()
+    FunctionsToExport = @(
+        'Add-FileExplorerNamespace'
+        'Get-FileExplorerNamespace'
+        'Remove-FileExplorerNamespace'
+    )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     # CmdletsToExport = @()

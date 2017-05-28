@@ -1,8 +1,8 @@
 <#
-.SYNOPSIS
+    .SYNOPSIS
     Remove an existing file explorer namespace.
 
-.DESCRIPTION
+    .DESCRIPTION
     Remove an existing file explorer namespace. It removes all entries from the
     following registry keys. Take care, you can also remove an existing built-in
     file explorer namespace like OneDrive.
@@ -13,70 +13,71 @@
     You can find the reference for this implementation on MSDN:
     https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
-.PARAMETER Id
+    .PARAMETER Id
     The id of the file explorer namespace to delete.
 
-.INPUTS
-    Spizzi.PowerShell.System.FileExplorerNamespace. You can pipe file explorer namespace objects.
+    .INPUTS
+    WindowsFever.FileExplorerNamespace. You can pipe existing file explorer
+    namespace objects to remove them from the system.
 
-.OUTPUTS
+    .OUTPUTS
     None. The command does not return any objects.
-    
-.EXAMPLE
+
+    .EXAMPLE
     C:\> Remove-FileExplorerNamespace -Id 'e9ec969f-3e60-4be3-b2bb-1a5d04beacc1'
     Remove the file explorer namespace with the given id.
 
-.EXAMPLE
+    .EXAMPLE
     C:\> Get-FileExplorerNamespace -Name 'Test' | Remove-FileExplorerNamespace
     Remove the file explorer namespace with the name 'Test'.
 
-.NOTES
+    .NOTES
     Author     : Claudio Spizzi
     License    : MIT License
 
-.LINK
-    https://github.com/claudiospizzi/Spizzi.Management
+    .LINK
+    https://github.com/claudiospizzi/WindowsFever
 #>
 
 function Remove-FileExplorerNamespace
 {
-    [CmdletBinding(ConfirmImpact='High',SupportsShouldProcess=$true)]
+    [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess = $true)]
     param
     (
-        [Parameter(Mandatory=$true,
-                   ValueFromPipelineByPropertyName=$true)]
-        [Guid[]] $Id
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [System.Guid[]]
+        $Id
     )
 
     process
     {
-        foreach ($CurrentId in $Id)
+        foreach ($currentId in $Id)
         {
-            if ((Get-FileExplorerNamespace -Id $CurrentId) -ne $null)
+            if ((Get-FileExplorerNamespace -Id $currentId) -ne $null)
             {
                 # The method ShouldProcess asks the user for confirmation or display just
                 # the action we perform inside this if when the users uses -WhatIf
-                if ($PSCmdlet.ShouldProcess($CurrentId, 'Remove'))
+                if ($PSCmdlet.ShouldProcess($currentId, 'Remove'))
                 {
                     # Step 1: Remove CLSID class implementation
-                    foreach ($Key in 'HKCU:\SOFTWARE\Classes\CLSID', 'HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID')
+                    foreach ($key in 'HKCU:\SOFTWARE\Classes\CLSID', 'HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID')
                     {
-                        if ((Test-Path -Path $Key))
+                        if ((Test-Path -Path $key))
                         {
-                            Remove-Item -Path "$Key\{$CurrentId}" -Recurse -Force
+                            Remove-Item -Path "$key\{$currentId}" -Recurse -Force
                         }
                     }
 
                     # Step 2: Remove namespace extension from root
-                    Remove-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{$CurrentId}" -Recurse -Force
+                    Remove-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{$currentId}" -Recurse -Force
 
                     # Step 3: Remove desktop hide feature
-                    Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name "{$CurrentId}" -Force
+                    Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name "{$currentId}" -Force
                 }
             }
             else
             {
-                Write-Warning -Message "The file explorer namespace with Id '$CurrentId' does not exists!"
+                Write-Warning -Message "The file explorer namespace with Id '$currentId' does not exists!"
             }
         }
     }

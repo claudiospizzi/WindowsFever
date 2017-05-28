@@ -3,11 +3,11 @@
   <ViewDefinitions>
 
     <View>
-      <Name>Spizzi.PowerShell.Management.FileExplorerNamespace</Name>
+      <Name>WindowsFever.FileExplorerNamespace</Name>
       <ViewSelectedBy>
-        <TypeName>Deserialized.Spizzi.PowerShell.Management.FileExplorerNamespace</TypeName>
-        <TypeName>CSV:Spizzi.PowerShell.Management.FileExplorerNamespace</TypeName>
-        <TypeName>Spizzi.PowerShell.Management.FileExplorerNamespace</TypeName>
+        <TypeName>Deserialized.WindowsFever.FileExplorerNamespace</TypeName>
+        <TypeName>CSV:WindowsFever.FileExplorerNamespace</TypeName>
+        <TypeName>WindowsFever.FileExplorerNamespace</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <TableHeaders>

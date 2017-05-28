@@ -1,8 +1,8 @@
 <#
-.SYNOPSIS
+    .SYNOPSIS
     Create a new file explorer namespace in Windows 10.
 
-.DESCRIPTION
+    .DESCRIPTION
     Create a new file explorer namespace in Windows 10. It uses the folloing
     registry paths to register the namespace properly.
     - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
@@ -12,58 +12,62 @@
     You can find the reference for this implementation on MSDN:
     https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
-.PARAMETER Id
+    .PARAMETER Id
     The guid of the new file explorer namespace. A random id will be generated,
     if this parameter is not specified.
 
-.PARAMETER Name
+    .PARAMETER Name
     The name of the new file explorer namespace. This name will be visible
     inside the file explorer.
 
-.PARAMETER Icon
+    .PARAMETER Icon
     The icon of the new file explorer namespace. Please specify a target dll or
     exe with the id of the icon. By default, the following icon is used:
     %SystemRoot%\System32\imageres.dll,156
 
-.PARAMETER Order
+    .PARAMETER Order
     The order of the new file explorer namespace. The order defines, where in
     the file explorer the new namespace will be visiable. The default order is
     66 (StarWars?).
 
-.PARAMETER TargetKnownFolder
+    .PARAMETER TargetKnownFolder
     You can specify a guid for a known folder, e.g. for OneDrive.
 
-.PARAMETER TargetFolderPath
+    .PARAMETER TargetFolderPath
     You can specify a physical path to the target folder path.
 
-.INPUTS
+    .INPUTS
     None. This command does not accept pipeline input.
 
-.OUTPUTS
-    Spizzi.PowerShell.System.FileExplorerNamespace. The created file explorer namespace object.
+    .OUTPUTS
+    WindowsFever.FileExplorerNamespace. The file explorer namespace object.
 
-.EXAMPLE
-    C:\> Add-FileExplorerNamespace -Name 'Test' -TargetFolderPath 'C:\Test'
-    Create a simple file explorer namespace with the name Test which points to C:\Test.
+    .EXAMPLE
+    C:\> Add-FileExplorerNamespace -Name 'Demo' -TargetFolderPath 'C:\Path\To\Demo'
+    Create a simple file explorer namespace with the name Test which points to
+    C:\Path\To\Demo.
 
-.EXAMPLE
+    .EXAMPLE
     C:\> Add-FileExplorerNamespace -Name 'Workspace' -Icon '%SystemRoot%\System32\imageres.dll,156' -TargetFolderPath "$HOME\Workspace" -Order 67
-    Create a complex Workspace file explorer namespace by specified every parameter including a specific icon.
+    Create a complex Workspace file explorer namespace by specified every
+    parameter including a specific icon.
 
-.EXAMPLE
+    .EXAMPLE
     C:\> Add-FileExplorerNamespace -Name 'PowerShell' -Icon '%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe,0' -TargetFolderPath "$HOME\Dropbox\PowerShell" -Order 65
-    Create a complex PowerShell file explorer namespace by specified every parameter including a specific icon.
+    Create a complex PowerShell file explorer namespace by specified every
+    parameter including a specific icon.
 
-.EXAMPLE
+    .EXAMPLE
     C:\> Add-FileExplorerNamespace -Id '57C16D98-4CA5-4AAA-8118-48C28D8C50BC' -Name 'OneDrive (Copy)' -Icon 'C:\WINDOWS\system32\imageres.dll,-1043' -TargetKnownFolder 'a52bba46-e9e1-435f-b3d9-28daa648c0f6'
-    Duplicate the OneDrive namespace inside the file explorer by using the OneDrive known folder class id.
+    Duplicate the OneDrive namespace inside the file explorer by using the
+    OneDrive known folder class id.
 
-.NOTES
+    .NOTES
     Author     : Claudio Spizzi
     License    : MIT License
 
-.LINK
-    https://github.com/claudiospizzi/Spizzi.Management
+    .LINK
+    https://github.com/claudiospizzi/WindowsFever
 #>
 
 function Add-FileExplorerNamespace
@@ -71,26 +75,30 @@ function Add-FileExplorerNamespace
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory=$false)]
-        [Guid] $Id = [Guid]::NewGuid(),
+        [Parameter(Mandatory = $false)]
+        [System.Guid]
+        $Id = [Guid]::NewGuid(),
 
-        [Parameter(Mandatory=$true)]
-        [String] $Name,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $Name,
 
-        [Parameter(Mandatory=$false)]
-        [String] $Icon = '%SystemRoot%\System32\imageres.dll,156',
+        [Parameter(Mandatory = $false)]
+        [System.String]
+        $Icon = '%SystemRoot%\System32\imageres.dll,156',
 
-        [Parameter(Mandatory=$false)]
-        [Int32] $Order = 66,
+        [Parameter(Mandatory = $false)]
+        [System.Int32]
+        $Order = 66,
 
-        [Parameter(Mandatory=$true,
-                   ParameterSetName='KnownFolder')]
-        [Guid] $TargetKnownFolder,
+        [Parameter(Mandatory = $true, ParameterSetName = 'KnownFolder')]
+        [System.Guid]
+        $TargetKnownFolder,
 
-        [Parameter(Mandatory=$true,
-                   ParameterSetName='FolderPath')]
-        [ValidateScript({Test-Path -Path $_})]
-        [String] $TargetFolderPath
+        [Parameter(Mandatory = $true, ParameterSetName = 'FolderPath')]
+        [ValidateScript({ Test-Path -Path $_ })]
+        [System.String]
+        $TargetFolderPath
     )
 
     # For security reason, check if the namespace already exists

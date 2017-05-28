@@ -1,8 +1,8 @@
 <#
-.SYNOPSIS
+    .SYNOPSIS
     List all file explorer namespaces of the current user.
 
-.DESCRIPTION
+    .DESCRIPTION
     List all file explorer namespaces of the current user. It uses the registry
     with the following paths to enumerate the file explorer namespaces:
     - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
@@ -10,36 +10,37 @@
     You can find the reference for this implementation on MSDN:
     https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
-.PARAMETER Id
+    .PARAMETER Id
     Parameter to filter for the id (GUID) of the file explorer namespace.
 
-.PARAMETER Name
+    .PARAMETER Name
     Parameter to filter for the name of the file explorer namespace.
 
-.INPUTS
+    .INPUTS
     None. This command does not accept pipeline input.
 
-.OUTPUTS
-    Spizzi.PowerShell.System.FileExplorerNamespace. A collection of file explorer namespace result objects.
+    .OUTPUTS
+    WindowsFever.FileExplorerNamespace. A collection of file explorer namespace
+    result objects.
 
-.EXAMPLE
+    .EXAMPLE
     C:\> Get-FileExplorerNamespace
     Get all file explorer namespaces for the current user.
 
-.EXAMPLE
+    .EXAMPLE
     C:\> Get-FileExplorerNamespace -Id '018d5c66-4533-4307-9b53-224de2ed1fe6'
     Get the file explorer namespaces with the provided GUID, which in this case is OneDrive.
 
-.EXAMPLE
+    .EXAMPLE
     C:\> Get-FileExplorerNamespace -Name 'OneDrive'
     Get the file explorer namespaces with the name OneDrive.
 
-.NOTES
+    .NOTES
     Author     : Claudio Spizzi
     License    : MIT License
 
-.LINK
-    https://github.com/claudiospizzi/Spizzi.Management
+    .LINK
+    https://github.com/claudiospizzi/WindowsFever
 #>
 
 function Get-FileExplorerNamespace
@@ -47,54 +48,56 @@ function Get-FileExplorerNamespace
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory=$false)]
-        [Guid] $Id = [Guid]::Empty,
+        [Parameter(Mandatory = $false)]
+        [System.Guid]
+        $Id = [Guid]::Empty,
 
         [Parameter(Mandatory=$false)]
         [AllowEmptyString()]
-        [String] $Name = [String]::Empty
+        [System.String]
+        $Name = [String]::Empty
     )
 
-    $NamespaceItems = Get-ChildItem -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace' | Get-ItemProperty
+    $namespaceItems = Get-ChildItem -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace' | Get-ItemProperty
 
-    foreach ($NamespaceItem in $NamespaceItems)
+    foreach ($namespaceItem in $namespaceItems)
     {
-        $NamespaceId   = [Guid] $NamespaceItem.PSChildName
-        $NamespaceName = $NamespaceItem.'(default)'
+        $namespaceId   = [Guid] $namespaceItem.PSChildName
+        $namespaceName = $namespaceItem.'(default)'
 
-        if (($Id -eq [Guid]::Empty -or $Id -eq $NamespaceId) -and ($Name -eq [String]::Empty -or $Name -eq $NamespaceName))
+        if (($Id -eq [Guid]::Empty -or $Id -eq $namespaceId) -and ($Name -eq [String]::Empty -or $Name -eq $namespaceName))
         {
-            $InitPropertyBag = Get-ItemProperty "HKCU:\SOFTWARE\Classes\CLSID\{$NamespaceId}\Instance\InitPropertyBag"
+            $initPropertyBag = Get-ItemProperty "HKCU:\SOFTWARE\Classes\CLSID\{$namespaceId}\Instance\initPropertyBag"
 
             # Based on the property bag definition, use the curresponding type
-            if ($InitPropertyBag.TargetKnownFolder -ne $null)
+            if ($initPropertyBag.TargetKnownFolder -ne $null)
             {
-                $TargetType  = 'KnownFolder'
-                $TargetValue = $InitPropertyBag.TargetKnownFolder
+                $targetType  = 'KnownFolder'
+                $targetValue = $initPropertyBag.TargetKnownFolder
             }
-            elseif ($InitPropertyBag.TargetFolderPath -ne $null)
+            elseif ($initPropertyBag.TargetFolderPath -ne $null)
             {
-                $TargetType  = 'FolderPath'
-                $TargetValue = $InitPropertyBag.TargetFolderPath
+                $targetType  = 'FolderPath'
+                $targetValue = $initPropertyBag.TargetFolderPath
             }
             else
             {
-                $TargetType  = 'Unknown'
-                $TargetValue = ''
+                $targetType  = 'Unknown'
+                $targetValue = ''
             }
 
             # Create a correctly typed output object
-            $Namespace = New-Object -TypeName PSObject -Property @{
-                Id          = $NamespaceId
-                Name        = $NamespaceName
-                Icon        = $(try { Get-ItemProperty -Path "HKCU:\SOFTWARE\Classes\CLSID\{$NamespaceId}\DefaultIcon" -ErrorAction Stop | Select-Object -ExpandProperty '(default)' } catch { 'Unknown' })
-                Order       = $(try { Get-ItemProperty -Path "HKCU:\SOFTWARE\Classes\CLSID\{$NamespaceId}" -ErrorAction Stop | Select-Object -ExpandProperty 'SortOrderIndex' } catch { 'Unknown' })
-                TargetType  = $TargetType
-                TargetValue = $TargetValue
+            $namespace = New-Object -TypeName PSObject -Property @{
+                Id          = $namespaceId
+                Name        = $namespaceName
+                Icon        = $(try { Get-ItemProperty -Path "HKCU:\SOFTWARE\Classes\CLSID\{$namespaceId}\DefaultIcon" -ErrorAction Stop | Select-Object -ExpandProperty '(default)' } catch { 'Unknown' })
+                Order       = $(try { Get-ItemProperty -Path "HKCU:\SOFTWARE\Classes\CLSID\{$namespaceId}" -ErrorAction Stop | Select-Object -ExpandProperty 'SortOrderIndex' } catch { 'Unknown' })
+                targetType  = $targetType
+                targetValue = $targetValue
             }
-            $Namespace.PSTypeNames.Insert(0, 'Spizzi.PowerShell.Management.FileExplorerNamespace')
+            $namespace.PSTypeNames.Insert(0, 'WindowsFever.FileExplorerNamespace')
 
-            Write-Output $Namespace
+            Write-Output $namespace
         }
     }
 }

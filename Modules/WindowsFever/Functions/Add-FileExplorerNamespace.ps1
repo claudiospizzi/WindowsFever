@@ -3,17 +3,18 @@
     Create a new file explorer namespace in Windows 10.
 
     .DESCRIPTION
-    Create a new file explorer namespace in Windows 10. It uses the folloing
-    registry paths to register the namespace properly.
+    Create a new file explorer namespace in Windows 10. It uses the following
+    registry paths to register the namespace properly:
     - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
     - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel
     - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
     - HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID\{00000000-0000-0000-0000-000000000000}
-    You can find the reference for this implementation on MSDN:
-    https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
+    You can find the reference for this implementation on MSDN. Even if it's
+    intended for a Cloud Storage Provider, it will work for every local folder:
+    - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
     .PARAMETER Id
-    The guid of the new file explorer namespace. A random id will be generated,
+    The GUID of the new file explorer namespace. A random id will be generated,
     if this parameter is not specified.
 
     .PARAMETER Name
@@ -27,25 +28,25 @@
 
     .PARAMETER Order
     The order of the new file explorer namespace. The order defines, where in
-    the file explorer the new namespace will be visiable. The default order is
-    66 (StarWars?).
+    the file explorer the new namespace will be visible. The default order is
+    66.
 
     .PARAMETER TargetKnownFolder
-    You can specify a guid for a known folder, e.g. for OneDrive.
+    You can specify a GUID for a known folder, e.g. for OneDrive.
 
     .PARAMETER TargetFolderPath
     You can specify a physical path to the target folder path.
 
     .INPUTS
-    None. This command does not accept pipeline input.
+    None.
 
     .OUTPUTS
-    WindowsFever.FileExplorerNamespace. The file explorer namespace object.
+    WindowsFever.FileExplorerNamespace.
 
     .EXAMPLE
     C:\> Add-FileExplorerNamespace -Name 'Demo' -TargetFolderPath 'C:\Path\To\Demo'
     Create a simple file explorer namespace with the name Test which points to
-    C:\Path\To\Demo.
+    the given path.
 
     .EXAMPLE
     C:\> Add-FileExplorerNamespace -Name 'Workspace' -Icon '%SystemRoot%\System32\imageres.dll,156' -TargetFolderPath "$HOME\Workspace" -Order 67
@@ -134,7 +135,7 @@ function Add-FileExplorerNamespace
             # Step 7: Provide the file system attributes of the target folder
             New-Item -Path "$Key\{$Id}\Instance" -Name 'InitPropertyBag' -ItemType String -Force | Out-Null
             New-ItemProperty -Path "$Key\{$Id}\Instance\InitPropertyBag" -Name 'Attributes' -Value 17 -PropertyType DWord -Force | Out-Null
-                
+
             # Step 8: Set the path for the target (depending of the type)
             switch ($PSCmdlet.ParameterSetName)
             {

@@ -7,8 +7,9 @@
     with the following paths to enumerate the file explorer namespaces:
     - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
     - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
-    You can find the reference for this implementation on MSDN:
-    https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
+    You can find the reference for this implementation on MSDN. Even if it's
+    intended for a Cloud Storage Provider, it will work for every local folder:
+    - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
     .PARAMETER Id
     Parameter to filter for the id (GUID) of the file explorer namespace.
@@ -17,11 +18,10 @@
     Parameter to filter for the name of the file explorer namespace.
 
     .INPUTS
-    None. This command does not accept pipeline input.
+    None.
 
     .OUTPUTS
-    WindowsFever.FileExplorerNamespace. A collection of file explorer namespace
-    result objects.
+    WindowsFever.FileExplorerNamespace.
 
     .EXAMPLE
     C:\> Get-FileExplorerNamespace
@@ -52,7 +52,7 @@ function Get-FileExplorerNamespace
         [System.Guid]
         $Id = [Guid]::Empty,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [AllowEmptyString()]
         [System.String]
         $Name = [String]::Empty
@@ -69,7 +69,7 @@ function Get-FileExplorerNamespace
         {
             $initPropertyBag = Get-ItemProperty "HKCU:\SOFTWARE\Classes\CLSID\{$namespaceId}\Instance\initPropertyBag"
 
-            # Based on the property bag definition, use the curresponding type
+            # Based on the property bag definition, use the corresponding type
             if ($initPropertyBag.TargetKnownFolder -ne $null)
             {
                 $targetType  = 'KnownFolder'

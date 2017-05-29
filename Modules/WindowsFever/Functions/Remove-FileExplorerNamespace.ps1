@@ -5,23 +5,23 @@
     .DESCRIPTION
     Remove an existing file explorer namespace. It removes all entries from the
     following registry keys. Take care, you can also remove an existing built-in
-    file explorer namespace like OneDrive.
+    file explorer namespace like OneDrive:
     - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
     - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel
     - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
     - HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID\{00000000-0000-0000-0000-000000000000}
-    You can find the reference for this implementation on MSDN:
-    https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
+    You can find the reference for this implementation on MSDN. Even if it's
+    intended for a Cloud Storage Provider, it will work for every local folder:
+    - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
     .PARAMETER Id
     The id of the file explorer namespace to delete.
 
     .INPUTS
-    WindowsFever.FileExplorerNamespace. You can pipe existing file explorer
-    namespace objects to remove them from the system.
+    WindowsFever.FileExplorerNamespace.
 
     .OUTPUTS
-    None. The command does not return any objects.
+    None.
 
     .EXAMPLE
     C:\> Remove-FileExplorerNamespace -Id 'e9ec969f-3e60-4be3-b2bb-1a5d04beacc1'

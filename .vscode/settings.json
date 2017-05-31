@@ -1,0 +1,14 @@
+{
+    "files.trimTrailingWhitespace": true,
+    "files.exclude": {
+        "Releases/**": true,
+        "Tests/**": true
+    },
+
+    "powershell.codeFormatting.openBraceOnSameLine": false,
+
+    "search.exclude": {
+        "Releases": true,
+        "Tests": true
+    }
+}

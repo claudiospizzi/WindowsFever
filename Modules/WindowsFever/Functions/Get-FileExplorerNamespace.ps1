@@ -58,7 +58,7 @@ function Get-FileExplorerNamespace
         $Name = [String]::Empty
     )
 
-    $namespaceItems = Get-ChildItem -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace' | Get-ItemProperty
+    $namespaceItems = Get-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\*'
 
     foreach ($namespaceItem in $namespaceItems)
     {

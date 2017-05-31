@@ -24,11 +24,7 @@ configuration: Release
 platform: Any CPU
 
 # Execute compile and build
-before_build:
-  - nuget restore "Sources"
-build:
-  verbosity: minimal
-after_build:
+build_script:
   - ps: Invoke-psake build.psake.ps1 -taskList Build
 
 # Execute test script

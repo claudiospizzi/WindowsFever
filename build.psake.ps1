@@ -84,12 +84,13 @@ Task Test -depends Build -requiredVariables ReleasePath, ModuleName, TestPath, T
 
     foreach ($module in $ModuleName)
     {
+        $moduleTestFile = Join-Path -Path $TestPath -ChildPath "$module-$TestFile"
         try
         {
             Push-Location -Path "$ReleasePath\$module"
 
             $invokePesterParams = @{
-                OutputFile   = Join-Path -Path $TestPath -ChildPath "$module-$TestFile"
+                OutputFile   = $moduleTestFile
                 OutputFormat = 'NUnitXml'
                 PassThru     = $true
                 Verbose      = $VerbosePreference
@@ -109,7 +110,7 @@ Task Test -depends Build -requiredVariables ReleasePath, ModuleName, TestPath, T
             if ($env:APPVEYOR)
             {
                 $webClient = New-Object -TypeName 'System.Net.WebClient'
-                $webClient.UploadFile("https://ci.appveyor.com/api/testresults/nunit/$env:APPVEYOR_JOB_ID", (Resolve-Path -Path 'Tests\pester.xml'))
+                $webClient.UploadFile("https://ci.appveyor.com/api/testresults/nunit/$env:APPVEYOR_JOB_ID", $moduleTestFile)
             }
         }
     }

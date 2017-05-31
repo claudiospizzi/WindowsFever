@@ -37,4 +37,4 @@ test_script:
       Invoke-psake build.psake.ps1 -taskList Test -notr
 after_test:
   - ps: >-
-      (New-Object -TypeName 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$AppVeyorBuildJobId", 'Tests\pester.xml')
+      (New-Object -TypeName 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$env:APPVEYOR_BUILD_NUMBER", 'Tests\pester.xml')

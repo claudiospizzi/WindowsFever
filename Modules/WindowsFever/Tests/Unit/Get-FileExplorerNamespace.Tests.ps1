@@ -64,7 +64,7 @@ Describe 'Get-FileExplorerNamespace' {
             $namespaces = Get-FileExplorerNamespace
 
             # Assert
-            $namespaces.Count | Should Be 2
+            $namespaces.Count | Should Be 3
         }
 
         It 'should return the OneDrive namespace by name' {

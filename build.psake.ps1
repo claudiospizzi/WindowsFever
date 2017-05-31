@@ -62,6 +62,12 @@ Task Build -depends Init, Clean, Stage -requiredVariables ReleasePath, ModulePat
 
         # Compress
         Compress-Archive -Path "$ReleasePath\$module" -DestinationPath "$ReleasePath\$module.zip" -Verbose:$VerbosePreference
+
+        # Publish AppVeyor artifacts
+        if ($env:APPVEYOR)
+        {
+            Push-AppveyorArtifact -Path "$ReleasePath\$module.zip" -DeploymentName $module -Verbose:$VerbosePreference
+        }
     }
 }
 
@@ -83,13 +89,12 @@ Task Test -depends Build -requiredVariables ReleasePath, ModuleName, TestPath, T
             Push-Location -Path "$ReleasePath\$module"
 
             $invokePesterParams = @{
-                OutputFile   = Join-Path -Path $TestPath -ChildPath $TestFile
+                OutputFile   = Join-Path -Path $TestPath -ChildPath "$module-$TestFile"
                 OutputFormat = 'NUnitXml'
                 PassThru     = $true
                 Verbose      = $VerbosePreference
                 #CodeCoverage = $CodeCoverageFiles
             }
-
             $testResults = Invoke-Pester @invokePesterParams
 
             Assert -conditionToCheck ($testResults.FailedCount -eq 0) -failureMessage "One or more Pester tests failed, build cannot continue."
@@ -99,6 +104,13 @@ Task Test -depends Build -requiredVariables ReleasePath, ModuleName, TestPath, T
             Pop-Location
 
             Remove-Module -Name $module -ErrorAction SilentlyContinue
+
+            # Publish AppVeyor test results
+            if ($env:APPVEYOR)
+            {
+                $webClient = New-Object -TypeName 'System.Net.WebClient'
+                $webClient.UploadFile("https://ci.appveyor.com/api/testresults/nunit/$env:APPVEYOR_JOB_ID", (Resolve-Path -Path 'Tests\pester.xml'))
+            }
         }
     }
 }

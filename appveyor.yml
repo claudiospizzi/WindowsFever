@@ -23,14 +23,18 @@ version: '{build}'
 configuration: Release
 platform: Any CPU
 
-# Execute compile and build
+# Execute psake build task
 build_script:
-  - ps: Invoke-psake build.psake.ps1 -taskList Build
+  - ps: >-
+      Invoke-psake build.psake.ps1 -taskList Build -notr
+after_build:
+  - ps: >-
+      Get-ChildItem -Path 'Releases' -Filter '*.zip' | ForEach-Object { Push-AppveyorArtifact -Path $_.FullName -DeploymentName $_.BaseName -Verbose:$VerbosePreference }
 
-# Execute test script
+# Execute psake test task
 test_script:
-  - ps: .Invoke-psake build.psake.ps1 -taskList Test
-
-# Execute deploy script
-#deploy_script:
-#  - ps: .\Scripts\release.ps1 -AppVeyor
+  - ps: >-
+      Invoke-psake build.psake.ps1 -taskList Test -notr
+after_test:
+  - ps: >-
+      (New-Object -TypeName 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$AppVeyorBuildJobId", 'Tests\pester.xml')

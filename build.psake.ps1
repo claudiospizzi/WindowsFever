@@ -59,6 +59,9 @@ Task Build -depends Init, Clean, Stage -requiredVariables ReleasePath, ModulePat
 
         # Concatenate whole code into the module file
         $moduleContent | Set-Content -Path "$ReleasePath\$module\$module.psm1" -Encoding UTF8 -Verbose:$VerbosePreference
+
+        # Compress
+        Compress-Archive -Path "$ReleasePath\$module" -DestinationPath "$ReleasePath\$module.zip" -Verbose:$VerbosePreference
     }
 }
 

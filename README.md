@@ -36,13 +36,10 @@ Storage Provider].
   Update properties of an existing file explorer namespace.
 
 
-## Requirements
+## Versions
 
-The following minimum requirements are necessary to use this module, or in other
-words are used to test this module:
-
-* Windows PowerShell 5.1
-* Windows 10 (for the File Explorer Namespace functions)
+Please find all versions in the [GitHub Releases] section and the release notes
+in the [CHANGELOG.md] file.
 
 
 ## Installation
@@ -61,10 +58,13 @@ manually on your local system:
 2. Extract the module and install it: [Installing a PowerShell Module]
 
 
-## Versions
+## Requirements
 
-Please find all versions in the [GitHub Releases] section and the release notes
-in the [CHANGELOG.md] file.
+The following minimum requirements are necessary to use this module, or in other
+words are used to test this module:
+
+* Windows PowerShell 5.1
+* Windows 10 (for the File Explorer Namespace functions)
 
 
 ## Contribute

@@ -60,10 +60,11 @@ manually on your local system:
 1. Download the latest release from GitHub as a ZIP file: [GitHub Releases]
 2. Extract the module and install it: [Installing a PowerShell Module]
 
+
 ## Versions
 
-Please find all versions in the [GitHub Releases] section and the change log in
-the [CHANGELOG.md] file.
+Please find all versions in the [GitHub Releases] section and the release notes
+in the [CHANGELOG.md] file.
 
 
 ## Contribute
@@ -83,7 +84,7 @@ Studio Code and ensure that the PowerShell extension is installed.
 [GitHub Releases]: https://github.com/claudiospizzi/WindowsFever/releases
 [Installing a PowerShell Module]: https://msdn.microsoft.com/en-us/library/dd878350
 
-[CHANGELOG.md] CHANGELOG.md
+[CHANGELOG.md]: CHANGELOG.md
 
 [Visual Studio Code]: https://code.visualstudio.com/
 [PowerShell Extension]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell

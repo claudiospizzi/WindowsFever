@@ -18,6 +18,15 @@
 
     "tasks": [
         {
+            "taskName": "Default",
+            "suppressTaskName": true,
+            "showOutput": "always",
+            "args": [
+                "Write-Host 'PS> Invoke-psake build.psake.ps1 -taskList Default' \"`n\";",
+                "Invoke-psake build.psake.ps1 -taskList Default -notr;"
+            ]
+        },
+        {
             "taskName": "Init",
             "suppressTaskName": true,
             "showOutput": "always",
@@ -64,6 +73,15 @@
                 "Invoke-psake build.psake.ps1 -taskList Test -notr;"
             ],
             "problemMatcher": "$pester"
+        },
+        {
+            "taskName": "Analyze",
+            "suppressTaskName": true,
+            "showOutput": "always",
+            "args": [
+                "Write-Host 'PS> Invoke-psake build.psake.ps1 -taskList Analyze' \"`n\";",
+                "Invoke-psake build.psake.ps1 -taskList Analyze -notr;"
+            ]
         }
     ]
 }

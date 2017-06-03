@@ -103,7 +103,7 @@ function Add-FileExplorerNamespace
     )
 
     # For security reason, check if the namespace already exists
-    if ((Get-FileExplorerNamespace -Id $Id) -ne $null)
+    if ($null -ne (Get-FileExplorerNamespace -Id $Id))
     {
         throw "The file explorer namespace with Id '$Id' already exists!"
     }

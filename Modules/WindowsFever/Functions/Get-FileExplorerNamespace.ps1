@@ -70,12 +70,12 @@ function Get-FileExplorerNamespace
             $initPropertyBag = Get-ItemProperty "HKCU:\SOFTWARE\Classes\CLSID\{$namespaceId}\Instance\initPropertyBag"
 
             # Based on the property bag definition, use the corresponding type
-            if ($initPropertyBag.TargetKnownFolder -ne $null)
+            if ($null -ne $initPropertyBag.TargetKnownFolder)
             {
                 $targetType  = 'KnownFolder'
                 $targetValue = $initPropertyBag.TargetKnownFolder
             }
-            elseif ($initPropertyBag.TargetFolderPath -ne $null)
+            elseif ($null -ne $initPropertyBag.TargetFolderPath)
             {
                 $targetType  = 'FolderPath'
                 $targetValue = $initPropertyBag.TargetFolderPath

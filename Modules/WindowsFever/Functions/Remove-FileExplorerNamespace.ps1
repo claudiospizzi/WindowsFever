@@ -53,7 +53,7 @@ function Remove-FileExplorerNamespace
     {
         foreach ($currentId in $Id)
         {
-            if ((Get-FileExplorerNamespace -Id $currentId) -ne $null)
+            if ($null -ne (Get-FileExplorerNamespace -Id $currentId))
             {
                 # The method ShouldProcess asks the user for confirmation or display just
                 # the action we perform inside this if when the users uses -WhatIf

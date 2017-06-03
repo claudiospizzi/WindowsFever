@@ -48,7 +48,7 @@
 
 function Set-FileExplorerNamespace
 {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
@@ -73,44 +73,50 @@ function Set-FileExplorerNamespace
         foreach ($currentId in $Id)
         {
             # For security reason, check if the namespace exists
-            if ((Get-FileExplorerNamespace -Id $currentId) -eq $null)
+            if ($null -ne (Get-FileExplorerNamespace -Id $currentId))
             {
                 throw "The file explorer namespace with Id '$currentId' does not exists!"
             }
 
-            # Use the default and WOW64 node to place the class
-            foreach ($Key in 'HKCU:\SOFTWARE\Classes\CLSID', 'HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID')
+            # The method ShouldProcess asks the user for confirmation or display
+            # just the action we perform inside this if when the users uses
+            # -WhatIf
+            if ($PSCmdlet.ShouldProcess($currentId, 'Set'))
             {
-                if ((Test-Path -Path $Key))
+                # Use the default and WOW64 node to place the class
+                foreach ($Key in 'HKCU:\SOFTWARE\Classes\CLSID', 'HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID')
                 {
-                    # Update the name
-                    if ($PSBoundParameters.Keys -contains 'Name')
+                    if ((Test-Path -Path $Key))
                     {
-                        Set-Item -Path "$Key\{$currentId}" -Value $Name -Force | Out-Null
-                    }
+                        # Update the name
+                        if ($PSBoundParameters.Keys -contains 'Name')
+                        {
+                            Set-Item -Path "$Key\{$currentId}" -Value $Name -Force | Out-Null
+                        }
 
-                    # Update the icon
-                    if ($PSBoundParameters.Keys -contains 'Icon')
-                    {
-                        Set-Item -Path "$Key\{$currentId}\DefaultIcon" -Value $Icon -Force | Out-Null
-                    }
+                        # Update the icon
+                        if ($PSBoundParameters.Keys -contains 'Icon')
+                        {
+                            Set-Item -Path "$Key\{$currentId}\DefaultIcon" -Value $Icon -Force | Out-Null
+                        }
 
-                    # Update the order
-                    if ($PSBoundParameters.Keys -contains 'Order')
-                    {
-                        Set-ItemProperty -Path "$Key\{$currentId}" -Name 'SortOrderIndex' -Value $Order -Force | Out-Null
+                        # Update the order
+                        if ($PSBoundParameters.Keys -contains 'Order')
+                        {
+                            Set-ItemProperty -Path "$Key\{$currentId}" -Name 'SortOrderIndex' -Value $Order -Force | Out-Null
+                        }
                     }
                 }
-            }
 
-            # Update the name
-            if ($PSBoundParameters.Keys -contains 'Name')
-            {
-                Set-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{$currentId}" -Value $Name -Force | Out-Null
-            }
+                # Update the name
+                if ($PSBoundParameters.Keys -contains 'Name')
+                {
+                    Set-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{$currentId}" -Value $Name -Force | Out-Null
+                }
 
-            # Return the newly create file explorer namespace
-            Get-FileExplorerNamespace -Id $currentId
+                # Return the newly create file explorer namespace
+                Get-FileExplorerNamespace -Id $currentId
+            }
         }
     }
 }

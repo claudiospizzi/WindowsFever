@@ -23,16 +23,16 @@ Storage Provider].
 
 ## Features
 
-* **Add-FileExplorerNamespace**
+* **Add-FileExplorerNamespace**  
   Create a new file explorer namespace in Windows 10.
 
-* **Get-FileExplorerNamespace**
+* **Get-FileExplorerNamespace**  
   List all file explorer namespaces of the current user.
 
-* **Remove-FileExplorerNamespace**
+* **Remove-FileExplorerNamespace**  
   Remove an existing file explorer namespace.
 
-* **Set-FileExplorerNamespace**
+* **Set-FileExplorerNamespace**  
   Update properties of an existing file explorer namespace.
 
 

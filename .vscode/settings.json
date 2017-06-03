@@ -1,5 +1,5 @@
 {
-    "files.trimTrailingWhitespace": true,
+    "files.trimTrailingWhitespace": false,
     "files.exclude": {
         "Releases/**": true,
         "Tests/**": true

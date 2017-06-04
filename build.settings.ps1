@@ -4,12 +4,12 @@ Properties {
     $ModulePath  = Join-Path -Path $PSScriptRoot -ChildPath 'Modules'
     $ModuleNames = Get-ChildItem -Path $ModulePath | Select-Object -ExpandProperty 'BaseName' -First 1
 
-    $ReleasePath = Join-Path -Path $PSScriptRoot -ChildPath 'Releases'
+    $ReleasePath = Join-Path -Path $PSScriptRoot -ChildPath 'bin'
 
-    $TestPath = Join-Path -Path $PSScriptRoot -ChildPath 'Tests'
+    $TestPath = Join-Path -Path $PSScriptRoot -ChildPath 'tst'
     $TestFile = 'pester.xml'
 
-    $AnalyzePath  = Join-Path -Path $PSScriptRoot -ChildPath 'Tests'
+    $AnalyzePath  = Join-Path -Path $PSScriptRoot -ChildPath 'tst'
     $AnalyzeFile  = 'scriptanalyzer.json'
     $AnalyzeRules = Get-ScriptAnalyzerRule
 

@@ -12,4 +12,13 @@ Properties {
     $AnalyzePath  = Join-Path -Path $PSScriptRoot -ChildPath 'Tests'
     $AnalyzeFile  = 'scriptanalyzer.json'
     $AnalyzeRules = Get-ScriptAnalyzerRule
+
+    $GalleryEnabled = $true
+    $GalleryName    = 'PSGallery'
+    $GallerySource  = 'https://www.powershellgallery.com/api/v2/'
+    $GalleryPublish = 'https://www.powershellgallery.com/api/v2/package/'
+    $GalleryKey     = $Env:PSGalleryKey
+
+    $GitHubEnabled = $true
+    $GitHubKey     = $Env:GitHubToken
 }

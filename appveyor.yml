@@ -28,7 +28,15 @@ build_script:
   - ps: >-
       Invoke-psake build.psake.ps1 -taskList Build -notr
 
-# Execute psake test task
+# Execute psake test and analyze task
 test_script:
   - ps: >-
-      Invoke-psake build.psake.ps1 -taskList Test -notr
+      Invoke-psake build.psake.ps1 -taskList Test, Analyze -notr
+
+# Execute psake deploy task
+deploy_script:
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq 'true' -and $env:APPVEYOR_REPO_BRANCH -eq 'master')
+      {
+        Invoke-psake build.psake.ps1 -taskList Deploy -notr
+      }

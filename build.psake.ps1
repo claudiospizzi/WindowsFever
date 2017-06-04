@@ -50,33 +50,40 @@ Task Build -depends Stage -requiredVariables ReleasePath, ModulePath, ModuleName
 
     foreach ($moduleName in $ModuleNames)
     {
-        $moduleContent = New-Object -TypeName 'System.Collections.Generic.List[System.String]'
-
-        # Load code for all function files
-        foreach ($function in (Get-ChildItem -Path "$ModulePath\$moduleName\Functions" -Filter '*.ps1' -File -ErrorAction 'SilentlyContinue'))
+        try
         {
-            $moduleContent.Add((Get-Content -Path $function.FullName -Raw))
+            $moduleContent = New-Object -TypeName 'System.Collections.Generic.List[System.String]'
+
+            # Load code for all function files
+            foreach ($function in (Get-ChildItem -Path "$ModulePath\$moduleName\Functions" -Filter '*.ps1' -File -ErrorAction 'SilentlyContinue'))
+            {
+                $moduleContent.Add((Get-Content -Path $function.FullName -Raw))
+            }
+
+            # Load code for all helpers files
+            foreach ($function in (Get-ChildItem -Path "$ModulePath\$moduleName\Helpers" -Filter '*.ps1' -File -ErrorAction 'SilentlyContinue'))
+            {
+                $moduleContent.Add((Get-Content -Path $function.FullName -Raw))
+            }
+
+            # Load code of the module file itself
+            $moduleContent.Add((Get-Content -Path "$ModulePath\$moduleName\$moduleName.psm1" | Select-Object -Skip 15) -join "`r`n")
+
+            # Concatenate whole code into the module file
+            $moduleContent | Set-Content -Path "$ReleasePath\$moduleName\$moduleName.psm1" -Encoding UTF8 -Verbose:$VerbosePreference
+
+            # Compress
+            Compress-Archive -Path "$ReleasePath\$moduleName" -DestinationPath "$ReleasePath\$moduleName.zip" -Verbose:$VerbosePreference
+
+            # Publish AppVeyor artifacts
+            if ($env:APPVEYOR)
+            {
+                Push-AppveyorArtifact -Path "$ReleasePath\$moduleName.zip" -DeploymentName $moduleName -Verbose:$VerbosePreference
+            }
         }
-
-        # Load code for all helpers files
-        foreach ($function in (Get-ChildItem -Path "$ModulePath\$moduleName\Helpers" -Filter '*.ps1' -File -ErrorAction 'SilentlyContinue'))
+        catch
         {
-            $moduleContent.Add((Get-Content -Path $function.FullName -Raw))
-        }
-
-        # Load code of the module file itself
-        $moduleContent.Add((Get-Content -Path "$ModulePath\$moduleName\$moduleName.psm1" | Select-Object -Skip 15) -join "`r`n")
-
-        # Concatenate whole code into the module file
-        $moduleContent | Set-Content -Path "$ReleasePath\$moduleName\$moduleName.psm1" -Encoding UTF8 -Verbose:$VerbosePreference
-
-        # Compress
-        Compress-Archive -Path "$ReleasePath\$moduleName" -DestinationPath "$ReleasePath\$moduleName.zip" -Verbose:$VerbosePreference
-
-        # Publish AppVeyor artifacts
-        if ($env:APPVEYOR)
-        {
-            Push-AppveyorArtifact -Path "$ReleasePath\$moduleName.zip" -DeploymentName $moduleName -Verbose:$VerbosePreference
+            Assert -conditionToCheck $false -failureMessage "Build failed: $_"
         }
     }
 }
@@ -148,6 +155,76 @@ Task Analyze -depends Build -requiredVariables ReleasePath, ModuleNames, Analyze
         Show-ScriptAnalyzerResult -ModuleName $moduleName -Rule $AnalyzeRules -Result $analyzeResults
 
         Assert -conditionToCheck ($analyzeResults.Count -eq 0) -failureMessage "One or more Script Analyzer tests failed, build cannot continue."
+    }
+}
+
+# Execute all Deploy tasks
+Task Deploy -depends DeployGallery, DeployGitHub
+
+# Deploy to the public PowerShell Gallery
+Task DeployGallery -depends Build -requiredVariables ReleasePath, ModuleNames, GalleryEnabled, GalleryName, GallerySource, GalleryPublish, GalleryKey {
+
+    if (!$GalleryEnabled)
+    {
+        return
+    }
+
+    # Register the target PowerShell Gallery, if it does not exist
+    if ($null -eq (Get-PSRepository -Name $GalleryName -ErrorAction SilentlyContinue))
+    {
+        Register-PSRepository -Name $GalleryName -SourceLocation $GallerySource -PublishLocation $GalleryPublish
+    }
+
+    foreach ($moduleName in $ModuleNames)
+    {
+        Publish-Module -Path "$ReleasePath\$moduleName" -Repository $GalleryName -NuGetApiKey $GalleryKey
+    }
+}
+
+# Deploy a release to the GitHub repository
+Task DeployGitHub -depends Build -requiredVariables ReleasePath, ModuleNames, GitHubEnabled, GitHubKey {
+
+    if (!$GitHubEnabled)
+    {
+        return
+    }
+
+    foreach ($moduleName in $ModuleNames)
+    {
+        $moduleVersion = (Import-PowerShellDataFile -Path "$ReleasePath\$moduleName\$moduleName").ModuleVersion
+        #$releaseNotes  = ''
+
+        # Create GitHub release
+        $releaseParams = @{
+            Method  = 'Post'
+            Uri     = "https://api.github.com/repos/claudiospizzi/$moduleName/releases"
+            Headers = @{
+                'Accept'        = 'application/vnd.github.v3+json'
+                'Authorization' = "token $GitHubKey"
+            }
+            Body   = @{
+                tag_name         = $moduleVersion
+                target_commitish = 'master'
+                name             = "$moduleName v$moduleVersion"
+                body             = '' #$releaseNotes
+                draft            = $false
+                prerelease       = $false
+            } | ConvertTo-Json
+        }
+        $release = Invoke-RestMethod @releaseParams -ErrorAction Stop
+
+        # Upload artifact to GitHub
+        $artifactParams = @{
+            Method          = 'Post'
+            Uri             = "https://uploads.github.com/repos/claudiospizzi/$moduleName/releases/$($release.id)/assets?name=$moduleName-$moduleVersion.zip"
+            Headers         = @{
+                'Accept'        = 'application/vnd.github.v3+json'
+                'Authorization' = "token $GitHubKey"
+                'Content-Type'  = 'application/zip'
+            }
+            InFile          = "$ReleasePath\$ModuleName.zip"
+        }
+        $artifact = Invoke-RestMethod @artifactParams -ErrorAction Stop
     }
 }
 

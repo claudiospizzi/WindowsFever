@@ -17,8 +17,8 @@ Properties {
     $GalleryName    = 'PSGallery'
     $GallerySource  = 'https://www.powershellgallery.com/api/v2/'
     $GalleryPublish = 'https://www.powershellgallery.com/api/v2/package/'
-    $GalleryKey     = $Env:PSGalleryKey
+    #$GalleryKey     = $Env:PSGalleryKey
 
     $GitHubEnabled = $true
-    $GitHubKey     = $Env:GitHubToken
+    #$GitHubKey     = $Env:GitHubToken
 }

@@ -54,6 +54,7 @@ Install-Module -Name 'WindowsFever'
 
 Alternatively, download the latest release from GitHub and install the module
 manually on your local system:
+
 1. Download the latest release from GitHub as a ZIP file: [GitHub Releases]
 2. Extract the module and install it: [Installing a PowerShell Module]
 

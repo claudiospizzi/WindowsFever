@@ -17,8 +17,9 @@ Properties {
     $GalleryName    = 'PSGallery'
     $GallerySource  = 'https://www.powershellgallery.com/api/v2/'
     $GalleryPublish = 'https://www.powershellgallery.com/api/v2/package/'
-    #$GalleryKey     = $Env:PSGalleryKey
+    $GalleryKey     = ''
 
-    $GitHubEnabled = $true
-    #$GitHubKey     = $Env:GitHubToken
+    $GitHubEnabled  = $true
+    $GitHubRepoName = Split-Path -Path $PSScriptRoot -Leaf
+    $GitHubKey      = ''
 }

@@ -20,6 +20,7 @@
         {
             "taskName": "Default",
             "suppressTaskName": true,
+            "isTestCommand": true,
             "showOutput": "always",
             "args": [
                 "Write-Host 'PS> Invoke-psake build.psake.ps1 -taskList Default' \"`n\";",
@@ -66,7 +67,6 @@
         {
             "taskName": "Test",
             "suppressTaskName": true,
-            "isTestCommand": true,
             "showOutput": "always",
             "args": [
                 "Write-Host 'PS> Invoke-psake build.psake.ps1 -taskList Test' \"`n\";",

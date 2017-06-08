@@ -177,12 +177,15 @@ Task DeployGallery -depends Build -requiredVariables ReleasePath, ModuleNames, G
 
     foreach ($moduleName in $ModuleNames)
     {
-        Publish-Module -Path "$ReleasePath\$moduleName" -Repository $GalleryName -NuGetApiKey $GalleryKey
+        $moduleVersion = (Import-PowerShellDataFile -Path "$ReleasePath\$moduleName\$moduleName.psd1").ModuleVersion
+        $releaseNotes  = Get-ReleaseNote -Version $moduleVersion
+
+        Publish-Module -Path "$ReleasePath\$moduleName" -Repository $GalleryName -NuGetApiKey $GalleryKey -ReleaseNotes $releaseNotes
     }
 }
 
 # Deploy a release to the GitHub repository
-Task DeployGitHub -depends Build -requiredVariables ReleasePath, ModuleNames, GitHubEnabled, GitHubKey {
+Task DeployGitHub -depends Build -requiredVariables ReleasePath, ModuleNames, GitHubEnabled, GitHubRepoName, GitHubKey {
 
     if (!$GitHubEnabled)
     {
@@ -191,13 +194,13 @@ Task DeployGitHub -depends Build -requiredVariables ReleasePath, ModuleNames, Gi
 
     foreach ($moduleName in $ModuleNames)
     {
-        $moduleVersion = (Import-PowerShellDataFile -Path "$ReleasePath\$moduleName\$moduleName").ModuleVersion
-        #$releaseNotes  = ''
+        $moduleVersion = (Import-PowerShellDataFile -Path "$ReleasePath\$moduleName\$moduleName.psd1").ModuleVersion
+        $releaseNotes  = Get-ReleaseNote -Version $moduleVersion
 
         # Create GitHub release
         $releaseParams = @{
             Method  = 'Post'
-            Uri     = "https://api.github.com/repos/claudiospizzi/$moduleName/releases"
+            Uri     = "https://api.github.com/repos/claudiospizzi/$GitHubRepoName/releases"
             Headers = @{
                 'Accept'        = 'application/vnd.github.v3+json'
                 'Authorization' = "token $GitHubKey"
@@ -206,7 +209,7 @@ Task DeployGitHub -depends Build -requiredVariables ReleasePath, ModuleNames, Gi
                 tag_name         = $moduleVersion
                 target_commitish = 'master'
                 name             = "$moduleName v$moduleVersion"
-                body             = '' #$releaseNotes
+                body             = ($releaseNotes -join "`n")
                 draft            = $false
                 prerelease       = $false
             } | ConvertTo-Json
@@ -216,7 +219,7 @@ Task DeployGitHub -depends Build -requiredVariables ReleasePath, ModuleNames, Gi
         # Upload artifact to GitHub
         $artifactParams = @{
             Method          = 'Post'
-            Uri             = "https://uploads.github.com/repos/claudiospizzi/$moduleName/releases/$($release.id)/assets?name=$moduleName-$moduleVersion.zip"
+            Uri             = "https://uploads.github.com/repos/claudiospizzi/$GitHubRepoName/releases/$($release.id)/assets?name=$moduleName-$moduleVersion.zip"
             Headers         = @{
                 'Accept'        = 'application/vnd.github.v3+json'
                 'Authorization' = "token $GitHubKey"
@@ -228,7 +231,7 @@ Task DeployGitHub -depends Build -requiredVariables ReleasePath, ModuleNames, Gi
     }
 }
 
-# Helper Function: Show Script Analyzer Result
+# Helper Function: Show the Script Analyzer results on the host
 function Show-ScriptAnalyzerResult($ModuleName, $Rule, $Result)
 {
     $colorMap = @{
@@ -253,4 +256,33 @@ function Show-ScriptAnalyzerResult($ModuleName, $Rule, $Result)
 
     Write-Host "Script Analyzer completed"
     Write-Host "Rules: $($Rule.Count) Failed: $($analyzeResults.Count)"
+}
+
+# Helper Function: Extract the Release Notes from the CHANGELOG.md file
+function Get-ReleaseNote($Version)
+{
+    $changelogFile = Join-Path -Path $PSScriptRoot -ChildPath 'CHANGELOG.md'
+
+    $releaseNotes = @()
+
+    $isCurrentVersion = $false
+
+    foreach ($line in (Get-Content -Path $changelogFile))
+    {
+        if ($line -eq "## $Version")
+        {
+            $isCurrentVersion = $true
+        }
+        elseif ($line -like '## *')
+        {
+            $isCurrentVersion = $false
+        }
+
+        if ($isCurrentVersion -and $line -like '- *')
+        {
+            $releaseNotes += $line
+        }
+    }
+
+    Write-Output $releaseNotes
 }

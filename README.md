@@ -35,6 +35,12 @@ Storage Provider].
 * **Set-FileExplorerNamespace**  
   Update properties of an existing file explorer namespace.
 
+* **Start-WatchPath**  
+  Register an event watcher for file system change events.
+
+* **Stop-WatchPath**  
+  Stop registered watchers for file system change events.
+
 
 ## Versions
 

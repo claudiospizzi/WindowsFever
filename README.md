@@ -1,7 +1,8 @@
 [![PowerShell Gallery - WindowsFever](https://img.shields.io/badge/PowerShell_Gallery-WindowsFever-0072C6.svg)](https://www.powershellgallery.com/packages/WindowsFever)
 [![GitHub - Release](https://img.shields.io/github/release/claudiospizzi/WindowsFever.svg)](https://github.com/claudiospizzi/WindowsFever/releases)
-[![AppVeyor - master](https://ci.appveyor.com/api/projects/status/qy518j43ii6f1xdq/branch/master?svg=true)](https://ci.appveyor.com/project/claudiospizzi/windowsfever/branch/master)
-[![AppVeyor - dev](https://ci.appveyor.com/api/projects/status/qy518j43ii6f1xdq/branch/dev?svg=true)](https://ci.appveyor.com/project/claudiospizzi/windowsfever/branch/dev)
+[![AppVeyor - master](https://img.shields.io/appveyor/ci/claudiospizzi/WindowsFever/master.svg)](https://ci.appveyor.com/project/claudiospizzi/WindowsFever/branch/master)
+[![AppVeyor - dev](https://img.shields.io/appveyor/ci/claudiospizzi/WindowsFever/master.svg)](https://ci.appveyor.com/project/claudiospizzi/WindowsFever/branch/dev)
+
 
 
 # WindowsFever PowerShell Module

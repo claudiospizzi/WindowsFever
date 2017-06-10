@@ -4,7 +4,6 @@
 [![AppVeyor - dev](https://img.shields.io/appveyor/ci/claudiospizzi/WindowsFever/master.svg)](https://ci.appveyor.com/project/claudiospizzi/WindowsFever/branch/dev)
 
 
-
 # WindowsFever PowerShell Module
 
 PowerShell Module with custom functions and cmdlets related to Windows.

@@ -87,7 +87,7 @@ Studio Code and ensure that the PowerShell extension is installed.
 
 [Integrate a Cloud Storage Provider]: https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
-[PowerShell Gallery]: https://www.powershellgallery.com/packages/ScriptConfig
+[PowerShell Gallery]: https://www.powershellgallery.com/packages/WindowsFever
 [GitHub Releases]: https://github.com/claudiospizzi/WindowsFever/releases
 [Installing a PowerShell Module]: https://msdn.microsoft.com/en-us/library/dd878350
 

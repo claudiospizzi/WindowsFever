@@ -23,6 +23,8 @@ Storage Provider].
 
 ## Features
 
+### File Explorer Namespace
+
 * **Add-FileExplorerNamespace**  
   Create a new file explorer namespace in Windows 10.
 
@@ -34,6 +36,8 @@ Storage Provider].
 
 * **Set-FileExplorerNamespace**  
   Update properties of an existing file explorer namespace.
+
+### Path Watcher
 
 * **Start-WatchPath**  
   Register an event watcher for file system change events.

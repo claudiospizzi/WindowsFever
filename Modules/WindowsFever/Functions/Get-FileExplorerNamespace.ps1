@@ -46,7 +46,7 @@
 
 function Get-FileExplorerNamespace
 {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'All')]
     param
     (
         [Parameter(Mandatory = $false, Position = 0, ParameterSetName = 'Id')]

@@ -87,8 +87,8 @@ Studio Code and ensure that the PowerShell extension is installed.
 * [Visual Studio Code] with the [PowerShell Extension]
 * [Pester], [PSScriptAnalyzer] and [psake] PowerShell Modules
 
-To release a new version in the [PowerShell Gallery] and the [GitHub Releases]
-section, use the following procedure:
+To release a new version in the PowerShell Gallery and the GitHub Releases
+section by using the release pipeline on AppVeyor, use the following procedure:
 
 1. Commit all changes in the dev branch
 2. Push the commits to GitHub

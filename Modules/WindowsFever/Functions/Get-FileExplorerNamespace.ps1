@@ -15,7 +15,8 @@
     Parameter to filter for the id (GUID) of the file explorer namespace.
 
     .PARAMETER Name
-    Parameter to filter for the name of the file explorer namespace.
+    Parameter to filter for the name of the file explorer namespace, optionally
+    with wildcard characters.
 
     .INPUTS
     None.
@@ -48,11 +49,11 @@ function Get-FileExplorerNamespace
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, Position = 0, ParameterSetName = 'Id')]
         [System.Guid]
         $Id = [Guid]::Empty,
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, Position = 0, ParameterSetName = 'Name')]
         [AllowEmptyString()]
         [System.String]
         $Name = [String]::Empty
@@ -65,7 +66,7 @@ function Get-FileExplorerNamespace
         $namespaceId   = [Guid] $namespaceItem.PSChildName
         $namespaceName = $namespaceItem.'(default)'
 
-        if (($Id -eq [Guid]::Empty -or $Id -eq $namespaceId) -and ($Name -eq [String]::Empty -or $Name -eq $namespaceName))
+        if (($Id -eq [Guid]::Empty -or $Id -eq $namespaceId) -and ($Name -eq [String]::Empty -or $namespaceName -like $Name))
         {
             $initPropertyBag = Get-ItemProperty "HKCU:\SOFTWARE\Classes\CLSID\{$namespaceId}\Instance\initPropertyBag"
 

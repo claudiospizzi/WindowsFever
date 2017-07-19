@@ -53,31 +53,30 @@ function Remove-FileExplorerNamespace
     {
         foreach ($currentId in $Id)
         {
-            if ($null -ne (Get-FileExplorerNamespace -Id $currentId))
+            # For security reason, check if the namespace exists
+            if ($null -eq (Get-FileExplorerNamespace -Id $currentId))
             {
-                # The method ShouldProcess asks the user for confirmation or display just
-                # the action we perform inside this if when the users uses -WhatIf
-                if ($PSCmdlet.ShouldProcess($currentId, 'Remove'))
-                {
-                    # Step 1: Remove CLSID class implementation
-                    foreach ($key in 'HKCU:\SOFTWARE\Classes\CLSID', 'HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID')
-                    {
-                        if ((Test-Path -Path $key))
-                        {
-                            Remove-Item -Path "$key\{$currentId}" -Recurse -Force
-                        }
-                    }
-
-                    # Step 2: Remove namespace extension from root
-                    Remove-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{$currentId}" -Recurse -Force
-
-                    # Step 3: Remove desktop hide feature
-                    Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name "{$currentId}" -Force
-                }
+                throw "The file explorer namespace with Id '$currentId' does not exists!"
             }
-            else
+
+            # The method ShouldProcess asks the user for confirmation or display just
+            # the action we perform inside this if when the users uses -WhatIf
+            if ($PSCmdlet.ShouldProcess($currentId, 'Remove'))
             {
-                Write-Warning -Message "The file explorer namespace with Id '$currentId' does not exists!"
+                # Step 1: Remove CLSID class implementation
+                foreach ($key in 'HKCU:\SOFTWARE\Classes\CLSID', 'HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID')
+                {
+                    if ((Test-Path -Path $key))
+                    {
+                        Remove-Item -Path "$key\{$currentId}" -Recurse -Force
+                    }
+                }
+
+                # Step 2: Remove namespace extension from root
+                Remove-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{$currentId}" -Recurse -Force
+
+                # Step 3: Remove desktop hide feature
+                Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name "{$currentId}" -Force
             }
         }
     }

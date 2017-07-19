@@ -73,7 +73,7 @@ function Set-FileExplorerNamespace
         foreach ($currentId in $Id)
         {
             # For security reason, check if the namespace exists
-            if ($null -ne (Get-FileExplorerNamespace -Id $currentId))
+            if ($null -eq (Get-FileExplorerNamespace -Id $currentId))
             {
                 throw "The file explorer namespace with Id '$currentId' does not exists!"
             }

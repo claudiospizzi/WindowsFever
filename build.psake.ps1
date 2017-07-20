@@ -179,7 +179,7 @@ Task TestScriptAnalyzer -requiredVariables ReleasePath, ModuleNames, ScriptAnaly
     {
         $moduleScriptAnalyzerFile = Join-Path -Path $ScriptAnalyzerPath -ChildPath "$moduleName-$ScriptAnalyzerFile"
 
-        $analyzeResults = Invoke-ScriptAnalyzer -Path .\Modules\WindowsFever -IncludeRule $ScriptAnalyzerRules -Recurse
+        $analyzeResults = Invoke-ScriptAnalyzer -Path "$ReleasePath\$moduleName" -IncludeRule $ScriptAnalyzerRules -Recurse
         $analyzeResults | ConvertTo-Json | Out-File -FilePath $moduleScriptAnalyzerFile -Encoding UTF8
 
         Show-ScriptAnalyzerResult -ModuleName $moduleName -Rule $ScriptAnalyzerRules -Result $analyzeResults

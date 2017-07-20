@@ -165,7 +165,7 @@ Task TestPester -requiredVariables ReleasePath, ModuleNames, PesterPath, PesterF
 }
 
 # Invoke Script Analyzer tests and stop if any test fails
-Task TestScriptAnalyzer -requiredVariables ReleasePath, ModuleNames, ScriptAnalyzerPath, ScriptAnalyzerFile, ScriptAnalyzerRules {
+Task TestScriptAnalyzer -requiredVariables ReleasePath, ModulePath, ModuleNames, ScriptAnalyzerPath, ScriptAnalyzerFile, ScriptAnalyzerRules {
 
     if (!(Get-Module -Name 'PSScriptAnalyzer' -ListAvailable))
     {
@@ -179,7 +179,7 @@ Task TestScriptAnalyzer -requiredVariables ReleasePath, ModuleNames, ScriptAnaly
     {
         $moduleScriptAnalyzerFile = Join-Path -Path $ScriptAnalyzerPath -ChildPath "$moduleName-$ScriptAnalyzerFile"
 
-        $analyzeResults = Invoke-ScriptAnalyzer -Path "$ReleasePath\$moduleName" -IncludeRule $ScriptAnalyzerRules -Recurse
+        $analyzeResults = Invoke-ScriptAnalyzer -Path "$ModulePath\$moduleName" -IncludeRule $ScriptAnalyzerRules -Recurse
         $analyzeResults | ConvertTo-Json | Out-File -FilePath $moduleScriptAnalyzerFile -Encoding UTF8
 
         Show-ScriptAnalyzerResult -ModuleName $moduleName -Rule $ScriptAnalyzerRules -Result $analyzeResults

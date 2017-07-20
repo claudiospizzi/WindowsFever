@@ -4,8 +4,9 @@ Properties {
     $ModulePath  = Join-Path -Path $PSScriptRoot -ChildPath 'Modules'
     $ModuleNames = Get-ChildItem -Path $ModulePath | Select-Object -ExpandProperty 'BaseName' -First 1
 
-    $SourcePath  = Join-Path -Path $PSScriptRoot -ChildPath 'Sources'
-    $SourceNames ='n/a'
+    $SourceEnabled = $false
+    $SourcePath    = ''
+    $SourceNames   = ''
 
     $ReleasePath = Join-Path -Path $PSScriptRoot -ChildPath 'bin'
 

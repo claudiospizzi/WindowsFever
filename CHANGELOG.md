@@ -8,19 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.2.1 - 2017-07-19
 
-- Fixed: Wrong existence checks in Set-FileExplorerNamespace and Remove-FileExplorerNamespace
+* Fixed: Wrong existence checks in Set-FileExplorerNamespace and Remove-FileExplorerNamespace
 
 
 ## 1.2.0 - 2017-07-19
 
-- Added: Parameter sets and wildcard for Get-FileExplorerNamespace
+* Added: Parameter sets and wildcard for Get-FileExplorerNamespace
 
 
 ## 1.1.0 - 2017-06-08
 
-- Added: Watch path functions
+* Added: Watch path functions
 
 
 ## 1.0.0 - 2017-06-05
 
-- Added: File Explorer Namespace functions
+* Added: File Explorer Namespace functions

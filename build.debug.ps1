@@ -10,4 +10,3 @@ Set-PSBreakpoint -Script "$PSScriptRoot\build.debug.ps1" -Line 10 | Out-Null
 Write-Debug 'Stop debugger'
 
 <# ------------------ PLACE DEBUG COMMANDS AFTER THIS LINE ------------------ #>
-<# SCRIPT #>

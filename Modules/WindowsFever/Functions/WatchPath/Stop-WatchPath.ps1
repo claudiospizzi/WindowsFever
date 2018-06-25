@@ -1,32 +1,31 @@
 <#
     .SYNOPSIS
-    Stop registered watchers for file system change events.
+        Stop registered watchers for file system change events.
 
     .DESCRIPTION
-    Remove event subscribers for the existing path by getting all event
-    subscribers and unregister all with the Unregister-Event command.
+        Remove event subscribers for the existing path by getting all event
+        subscribers and unregister all with the Unregister-Event command.
 
     .PARAMETER Path
-    Path to stop watching changes.
+        Path to stop watching changes.
 
     .INPUTS
-    None.
+        None.
 
     .OUTPUTS
-    None
+        None
 
     .EXAMPLE
-    C:\> Stop-WatchPath -Path 'C:\Demo'
-    Stop watching the path C:\Demo for all events.
+        PS C:\> Stop-WatchPath -Path 'C:\Demo'
+        Stop watching the path C:\Demo for all events.
 
     .NOTES
-    Author     : Claudio Spizzi
-    License    : MIT License
+        Author     : Claudio Spizzi
+        License    : MIT License
 
     .LINK
-    https://github.com/claudiospizzi/WindowsFever
+        https://github.com/claudiospizzi/WindowsFever
 #>
-
 function Stop-WatchPath
 {
     [CmdletBinding(SupportsShouldProcess = $true)]

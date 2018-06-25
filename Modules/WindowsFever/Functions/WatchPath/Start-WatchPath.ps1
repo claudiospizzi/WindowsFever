@@ -1,63 +1,62 @@
 <#
     .SYNOPSIS
-    Register an event watcher for file system change events.
+        Register an event watcher for file system change events.
 
     .DESCRIPTION
-    Use the System.IO.FileSystemWatcher .NET class to watch for file system
-    events like create, change, rename and delete. Thanks to the PowerShell
-    cmdlet Register-ObjectEvent, you can provide script blocks to process the
-    events.
+        Use the System.IO.FileSystemWatcher .NET class to watch for file system
+        events like create, change, rename and delete. Thanks to the PowerShell
+        cmdlet Register-ObjectEvent, you can provide script blocks to process
+        the events.
 
     .PARAMETER Path
-    Path to watch for changes.
+        Path to watch for changes.
 
     .PARAMETER Filter
-    The file filter, be default any file (wildcard).
+        The file filter, be default any file (wildcard).
 
     .PARAMETER Recurse
-    Optionally watch all subfolders and files.
+        Optionally watch all subfolders and files.
 
     .PARAMETER NotifyFilter
-    Change the events to listen on. By default for file name and last write.
+        Change the events to listen on. By default for file name and last write.
 
     .PARAMETER CreatedAction
-    Script block to execute, when the create-event happens. The variable $Event
-    will contain all arguments and properties of the event.
+        Script block to execute, when the create-event happens. The variable
+        $Event will contain all arguments and properties of the event.
 
     .PARAMETER ChangedAction
-    Script block to execute, when the change-event happens. The variable $Event
-    will contain all arguments and properties of the event.
+        Script block to execute, when the change-event happens. The variable
+        $Event will contain all arguments and properties of the event.
 
     .PARAMETER RenamedAction
-    Script block to execute, when the rename-event happens. The variable $Event
-    will contain all arguments and properties of the event.
+        Script block to execute, when the rename-event happens. The variable
+        $Event will contain all arguments and properties of the event.
 
     .PARAMETER DeletedAction
-    Script block to execute, when the delete-event happens. The variable $Event
-    will contain all arguments and properties of the event.
+        Script block to execute, when the delete-event happens. The variable
+        $Event will contain all arguments and properties of the event.
 
     .INPUTS
-    None.
+        None.
 
     .OUTPUTS
-    None
+        None
 
     .EXAMPLE
-    C:\> Start-WatchPath -Path 'C:\Demo' -Filter 'file.txt' -ChangedAction { Write-Host "File changed: $($Event.SourceArgs[1].FullPath)" }
-    Watch the C:\Demo\file.txt for changes and write them to the host.
+        PS C:\> Start-WatchPath -Path 'C:\Demo' -Filter 'file.txt' -ChangedAction { Write-Host "File changed: $($Event.SourceArgs[1].FullPath)" }
+        Watch the C:\Demo\file.txt for changes and write them to the host.
 
     .EXAMPLE
-    C:\> Start-WatchPath -Path 'C:\Windows' -Recurse -CreatedAction { Write-Host "File changed: $($Event.SourceArgs[1].FullPath)" }
-    Watch for new files in the C:\Windows directory.
+        PS C:\> Start-WatchPath -Path 'C:\Windows' -Recurse -CreatedAction { Write-Host "File changed: $($Event.SourceArgs[1].FullPath)" }
+        Watch for new files in the C:\Windows directory.
 
     .NOTES
-    Author     : Claudio Spizzi
-    License    : MIT License
+        Author     : Claudio Spizzi
+        License    : MIT License
 
     .LINK
-    https://github.com/claudiospizzi/WindowsFever
+        https://github.com/claudiospizzi/WindowsFever
 #>
-
 function Start-WatchPath
 {
     [CmdletBinding(SupportsShouldProcess = $true)]

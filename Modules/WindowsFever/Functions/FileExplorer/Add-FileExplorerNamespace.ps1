@@ -1,76 +1,75 @@
 <#
     .SYNOPSIS
-    Create a new file explorer namespace in Windows 10.
+        Create a new file explorer namespace in Windows 10.
 
     .DESCRIPTION
-    Create a new file explorer namespace in Windows 10. It uses the following
-    registry paths to register the namespace properly:
-    - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
-    - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel
-    - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
-    - HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID\{00000000-0000-0000-0000-000000000000}
-    You can find the reference for this implementation on MSDN. Even if it's
-    intended for a Cloud Storage Provider, it will work for every local folder:
-    - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
+        Create a new file explorer namespace in Windows 10. It uses the
+        following registry paths to register the namespace properly:
+        - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
+        - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel
+        - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
+        - HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID\{00000000-0000-0000-0000-000000000000}
+        You can find the reference for this implementation on MSDN. Even if it's
+        intended for a Cloud Storage Provider, it will work for every local folder:
+        - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
     .PARAMETER Id
-    The GUID of the new file explorer namespace. A random id will be generated,
-    if this parameter is not specified.
+        The GUID of the new file explorer namespace. A random id will be
+        generated, if this parameter is not specified.
 
     .PARAMETER Name
-    The name of the new file explorer namespace. This name will be visible
-    inside the file explorer.
+        The name of the new file explorer namespace. This name will be visible
+        inside the file explorer.
 
     .PARAMETER Icon
-    The icon of the new file explorer namespace. Please specify a target dll or
-    exe with the id of the icon. By default, the following icon is used:
-    %SystemRoot%\System32\imageres.dll,156
+        The icon of the new file explorer namespace. Please specify a target dll
+        or exe with the id of the icon. By default, the following icon is used:
+        %SystemRoot%\System32\imageres.dll,156
 
     .PARAMETER Order
-    The order of the new file explorer namespace. The order defines, where in
-    the file explorer the new namespace will be visible. The default order is
-    66.
+        The order of the new file explorer namespace. The order defines, where
+        in the file explorer the new namespace will be visible. The default
+        order is 66.
 
     .PARAMETER TargetKnownFolder
-    You can specify a GUID for a known folder, e.g. for OneDrive.
+        You can specify a GUID for a known folder, e.g. for OneDrive.
 
     .PARAMETER TargetFolderPath
-    You can specify a physical path to the target folder path.
+        You can specify a physical path to the target folder path.
 
     .INPUTS
-    None.
+        None.
 
     .OUTPUTS
-    WindowsFever.FileExplorerNamespace.
+        WindowsFever.FileExplorerNamespace.
 
     .EXAMPLE
-    C:\> Add-FileExplorerNamespace -Name 'Demo' -TargetFolderPath 'C:\Path\To\Demo'
-    Create a simple file explorer namespace with the name Test which points to
-    the given path.
+        PS C:\> Add-FileExplorerNamespace -Name 'Demo' -TargetFolderPath 'C:\Path\To\Demo'
+        Create a simple file explorer namespace with the name Test which points
+        to the given path.
 
     .EXAMPLE
-    C:\> Add-FileExplorerNamespace -Name 'Workspace' -Icon '%SystemRoot%\System32\imageres.dll,156' -TargetFolderPath "$HOME\Workspace" -Order 67
-    Create a complex Workspace file explorer namespace by specified every
-    parameter including a specific icon.
+        PS C:\> Add-FileExplorerNamespace -Name 'Workspace' -Icon '%SystemRoot%\System32\imageres.dll,156' -TargetFolderPath "$HOME\Workspace" -Order 67
+        Create a complex Workspace file explorer namespace by specified every
+        parameter including a specific icon.
 
     .EXAMPLE
-    C:\> Add-FileExplorerNamespace -Name 'PowerShell' -Icon '%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe,0' -TargetFolderPath "$HOME\Dropbox\PowerShell" -Order 65
-    Create a complex PowerShell file explorer namespace by specified every
-    parameter including a specific icon.
+        PS C:\> Add-FileExplorerNamespace -Name 'PowerShell' -Icon '%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe,0' -TargetFolderPath "$HOME\Dropbox\PowerShell" -Order 65
+        Create a complex PowerShell file explorer namespace by specified every
+        parameter including a specific icon.
 
     .EXAMPLE
-    C:\> Add-FileExplorerNamespace -Id '57C16D98-4CA5-4AAA-8118-48C28D8C50BC' -Name 'OneDrive (Copy)' -Icon 'C:\WINDOWS\system32\imageres.dll,-1043' -TargetKnownFolder 'a52bba46-e9e1-435f-b3d9-28daa648c0f6'
-    Duplicate the OneDrive namespace inside the file explorer by using the
-    OneDrive known folder class id.
+        PS C:\> Add-FileExplorerNamespace -Id '57C16D98-4CA5-4AAA-8118-48C28D8C50BC' -Name 'OneDrive (Copy)' -Icon 'C:\WINDOWS\system32\imageres.dll,-1043' -TargetKnownFolder 'a52bba46-e9e1-435f-b3d9-28daa648c0f6'
+        Duplicate the OneDrive namespace inside the file explorer by using the
+        OneDrive known folder class id.
 
     .NOTES
-    Author     : Claudio Spizzi
-    License    : MIT License
+        Author     : Claudio Spizzi
+        License    : MIT License
 
     .LINK
-    https://github.com/claudiospizzi/WindowsFever
+        https://github.com/claudiospizzi/WindowsFever
 #>
-
 function Add-FileExplorerNamespace
 {
     [CmdletBinding()]

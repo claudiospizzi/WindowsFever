@@ -1,49 +1,50 @@
 <#
     .SYNOPSIS
-    List all file explorer namespaces of the current user.
+        List all file explorer namespaces of the current user.
 
     .DESCRIPTION
-    List all file explorer namespaces of the current user. It uses the registry
-    with the following paths to enumerate the file explorer namespaces:
-    - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
-    - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
-    You can find the reference for this implementation on MSDN. Even if it's
-    intended for a Cloud Storage Provider, it will work for every local folder:
-    - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
+        List all file explorer namespaces of the current user. It uses the
+        registry with the following paths to enumerate the file explorer
+        namespaces:
+        - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
+        - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
+        You can find the reference for this implementation on MSDN. Even if it's
+        intended for a Cloud Storage Provider, it will work for every local
+        folder:
+        - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
     .PARAMETER Id
-    Parameter to filter for the id (GUID) of the file explorer namespace.
+        Parameter to filter for the id (GUID) of the file explorer namespace.
 
     .PARAMETER Name
-    Parameter to filter for the name of the file explorer namespace, optionally
-    with wildcard characters.
+        Parameter to filter for the name of the file explorer namespace,
+        optionally with wildcard characters.
 
     .INPUTS
-    None.
+        None.
 
     .OUTPUTS
-    WindowsFever.FileExplorerNamespace.
+        WindowsFever.FileExplorerNamespace.
 
     .EXAMPLE
-    C:\> Get-FileExplorerNamespace
-    Get all file explorer namespaces for the current user.
+        PS C:\> Get-FileExplorerNamespace
+        Get all file explorer namespaces for the current user.
 
     .EXAMPLE
-    C:\> Get-FileExplorerNamespace -Id '018d5c66-4533-4307-9b53-224de2ed1fe6'
-    Get the file explorer namespaces with the provided GUID, which in this case is OneDrive.
+        PS C:\> Get-FileExplorerNamespace -Id '018d5c66-4533-4307-9b53-224de2ed1fe6'
+        Get the file explorer namespaces with the provided GUID, which in this case is OneDrive.
 
     .EXAMPLE
-    C:\> Get-FileExplorerNamespace -Name 'OneDrive'
-    Get the file explorer namespaces with the name OneDrive.
+        PS C:\> Get-FileExplorerNamespace -Name 'OneDrive'
+        Get the file explorer namespaces with the name OneDrive.
 
     .NOTES
-    Author     : Claudio Spizzi
-    License    : MIT License
+        Author     : Claudio Spizzi
+        License    : MIT License
 
     .LINK
-    https://github.com/claudiospizzi/WindowsFever
+        https://github.com/claudiospizzi/WindowsFever
 #>
-
 function Get-FileExplorerNamespace
 {
     [CmdletBinding(DefaultParameterSetName = 'All')]

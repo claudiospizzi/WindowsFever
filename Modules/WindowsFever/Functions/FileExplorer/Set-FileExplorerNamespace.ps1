@@ -1,51 +1,52 @@
 <#
     .SYNOPSIS
-    Update properties of an existing file explorer namespace.
+        Update properties of an existing file explorer namespace.
 
     .DESCRIPTION
-    Update properties of an existing file explorer namespace in Windows 10. It
-    updates the following registry paths to change the namespace, if required:
-    - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
-    - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel
-    - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
-    - HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID\{00000000-0000-0000-0000-000000000000}
-    You can find the reference for this implementation on MSDN. Even if it's
-    intended for a Cloud Storage Provider, it will work for every local folder:
-    - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
+        Update properties of an existing file explorer namespace in Windows 10.
+        It updates the following registry paths to change the namespace, if
+        required:
+        - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace
+        - HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel
+        - HKCU:\SOFTWARE\Classes\CLSID\{00000000-0000-0000-0000-000000000000}
+        - HKCU:\SOFTWARE\Classes\Wow6432Node\CLSID\{00000000-0000-0000-0000-000000000000}
+        You can find the reference for this implementation on MSDN. Even if it's
+        intended for a Cloud Storage Provider, it will work for every local
+        folder:
+        - https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
 
     .PARAMETER Id
-    The GUID of the existing file explorer namespace.
+        The GUID of the existing file explorer namespace.
 
     .PARAMETER Name
-    The new name of the new file explorer namespace.
+        The new name of the new file explorer namespace.
 
     .PARAMETER Icon
-    The new icon of the new file explorer namespace. Please specify a target dll
-    or exe with the id of the icon.
+        The new icon of the new file explorer namespace. Please specify a target
+        dll or exe with the id of the icon.
 
     .PARAMETER Order
-    The new order of the new file explorer namespace. The order defines, where
-    in the file explorer the new namespace will be visible.
+        The new order of the new file explorer namespace. The order defines,
+        where in the file explorer the new namespace will be visible.
 
     .INPUTS
-    WindowsFever.FileExplorerNamespace.
+        WindowsFever.FileExplorerNamespace.
 
     .OUTPUTS
-    WindowsFever.FileExplorerNamespace.
+        WindowsFever.FileExplorerNamespace.
 
     .EXAMPLE
-    C:\> Get-FileExplorerNamespace -Name 'PowerShell' | Set-FileExplorerNamespace -Order 66
-    Update the order property of the existing PowerShell file explorer namespace
-    to number 66.
+        PS C:\> Get-FileExplorerNamespace -Name 'PowerShell' | Set-FileExplorerNamespace -Order 66
+        Update the order property of the existing PowerShell file explorer
+        namespace to number 66.
 
     .NOTES
-    Author     : Claudio Spizzi
-    License    : MIT License
+        Author     : Claudio Spizzi
+        License    : MIT License
 
     .LINK
-    https://github.com/claudiospizzi/WindowsFever
+        https://github.com/claudiospizzi/WindowsFever
 #>
-
 function Set-FileExplorerNamespace
 {
     [CmdletBinding(SupportsShouldProcess = $true)]

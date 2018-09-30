@@ -4,9 +4,9 @@ Properties {
     $ModuleNames = 'WindowsFever'
 
     $GalleryEnabled = $true
-    $GalleryKey     = Get-VaultSecureString -TargetName 'PS-SecureString-GalleryKey'
+    $GalleryKey     = Use-VaultSecureString -TargetName 'PowerShell Gallery Key (claudiospizzi)'
 
     $GitHubEnabled  = $true
     $GitHubRepoName = 'claudiospizzi/WindowsFever'
-    $GitHubToken    = Get-VaultSecureString -TargetName 'PS-SecureString-GitHubToken'
+    $GitHubToken    = Use-VaultSecureString -TargetName 'GitHub Token (claudiospizzi)'
 }

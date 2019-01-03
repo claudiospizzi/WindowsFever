@@ -55,5 +55,34 @@
       </TableControl>
     </View>
 
+    <View>
+      <Name>WindowsFever.HostsEntry</Name>
+      <ViewSelectedBy>
+        <TypeName>Deserialized.WindowsFever.HostsEntry</TypeName>
+        <TypeName>CSV:WindowsFever.HostsEntry</TypeName>
+        <TypeName>WindowsFever.HostsEntry</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Width>18</Width>
+          </TableColumnHeader>
+          <TableColumnHeader />
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Address</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Hostname</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+
   </ViewDefinitions>
 </Configuration>

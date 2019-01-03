@@ -65,10 +65,16 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
+        # File Explorer
         'Add-FileExplorerNamespace'
         'Get-FileExplorerNamespace'
         'Remove-FileExplorerNamespace'
         'Set-FileExplorerNamespace'
+        # Hosts File
+        'Add-HostsEntry'
+        'Get-HostsEntry'
+        'Remove-HostsEntry'
+        # Watch Path
         'Start-WatchPath'
         'Stop-WatchPath'
     )

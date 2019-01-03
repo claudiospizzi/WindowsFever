@@ -9,6 +9,6 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "createTemporaryIntegratedConsole": true
-        }<# OTHER LAUNCH CONFIG #>
+        }
     ]
 }

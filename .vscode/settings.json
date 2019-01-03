@@ -1,5 +1,11 @@
 {
+    // Trim trailing whitespaces, but not for markdown
     "files.trimTrailingWhitespace": true,
+    "[markdown]": {
+        "files.trimTrailingWhitespace": false
+    },
+
+    // Exclude files form the explorer tree
     "files.exclude": {
         "bin/**": true,
         "tst/**": true,
@@ -7,12 +13,17 @@
         "Sources/*/packages/**": true,
         "Sources/*/TestResults/**": true
     },
-
     "search.exclude": {
         "bin": true,
         "tst": true
     },
 
+    // PowerShell console behaviour
+    "powershell.debugging.createTemporaryIntegratedConsole": true,
+    "powershell.integratedConsole.showOnStartup": true,
+    "powershell.integratedConsole.focusConsoleOnExecute": false,
+
+    // PowerShell code formatting
     "powershell.codeFormatting.openBraceOnSameLine": false,
     "powershell.codeFormatting.newLineAfterOpenBrace": true,
     "powershell.codeFormatting.newLineAfterCloseBrace": true,
@@ -21,26 +32,5 @@
     "powershell.codeFormatting.whitespaceAroundOperator": true,
     "powershell.codeFormatting.whitespaceAfterSeparator": true,
     "powershell.codeFormatting.ignoreOneLineBlock": true,
-    "powershell.codeFormatting.alignPropertyValuePairs": true,
-
-    "cSpell.words": [
-        "Spizzi",
-        "cmdlets",
-        "imageres",
-        "HKCU",
-        "CLSID",
-        "GUID",
-        "Cmdlet",
-        "Recurse",
-        "Veyor",
-        "DEBUGING",
-        "APPVEYOR",
-        "psake",
-        "Changelog",
-        "Params",
-        "scriptanalyzer",
-        "Repo",
-        "subfolders",
-        "Unregister"
-    ]
+    "powershell.codeFormatting.alignPropertyValuePairs": true
 }

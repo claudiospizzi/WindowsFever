@@ -1,13 +1,10 @@
 [![PowerShell Gallery - WindowsFever](https://img.shields.io/badge/PowerShell_Gallery-WindowsFever-0072C6.svg)](https://www.powershellgallery.com/packages/WindowsFever)
 [![GitHub - Release](https://img.shields.io/github/release/claudiospizzi/WindowsFever.svg)](https://github.com/claudiospizzi/WindowsFever/releases)
 [![AppVeyor - master](https://img.shields.io/appveyor/ci/claudiospizzi/WindowsFever/master.svg)](https://ci.appveyor.com/project/claudiospizzi/WindowsFever/branch/master)
-[![AppVeyor - dev](https://img.shields.io/appveyor/ci/claudiospizzi/WindowsFever/dev.svg)](https://ci.appveyor.com/project/claudiospizzi/WindowsFever/branch/dev)
-
 
 # WindowsFever PowerShell Module
 
 PowerShell Module with custom functions and cmdlets related to Windows.
-
 
 ## Introduction
 
@@ -21,7 +18,6 @@ about the File Explorer Namespaces are available on MSDN: [Integrate a Cloud
 Storage Provider].
 
 [Integrate a Cloud Storage Provider]: https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934
-
 
 ## Features
 
@@ -47,12 +43,10 @@ Storage Provider].
 * **Stop-WatchPath**  
   Stop registered watchers for file system change events.
 
-
 ## Versions
 
 Please find all versions in the [GitHub Releases] section and the release notes
 in the [CHANGELOG.md] file.
-
 
 ## Installation
 
@@ -70,7 +64,6 @@ manually on your local system:
 1. Download the latest release from GitHub as a ZIP file: [GitHub Releases]
 2. Extract the module and install it: [Installing a PowerShell Module]
 
-
 ## Requirements
 
 The following minimum requirements are necessary to use this module, or in other
@@ -78,7 +71,6 @@ words are used to test this module:
 
 * Windows PowerShell 5.1
 * Windows 10 (for the File Explorer Namespace functions)
-
 
 ## Contribute
 
@@ -88,8 +80,6 @@ Studio Code and ensure that the PowerShell extension is installed.
 
 * [Visual Studio Code] with the [PowerShell Extension]
 * [Pester], [PSScriptAnalyzer] and [psake] PowerShell Modules
-
-
 
 [PowerShell Gallery]: https://www.powershellgallery.com/packages/WindowsFever
 [GitHub Releases]: https://github.com/claudiospizzi/WindowsFever/releases

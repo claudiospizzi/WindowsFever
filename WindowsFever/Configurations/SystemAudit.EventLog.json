@@ -1,0 +1,34 @@
+{
+    "Application": [
+        {
+            "EventId": 11707,
+            "Component": "MSIInstaller",
+            "Action": "Installation successfully"
+        },
+        {
+            "EventId": 11708,
+            "Component": "MSIInstaller",
+            "Action": "Installation failed"
+        },
+        {
+            "EventId": 11724,
+            "Component": "MSIInstaller",
+            "Action": "Removal successfully"
+        },
+        {
+            "EventId": 11725,
+            "Component": "MSIInstaller",
+            "Action": "Removal failed"
+        },
+        {
+            "EventId": 11728,
+            "Component": "MSIInstaller",
+            "Action": "Configuration successfully"
+        },
+        {
+            "EventId": 11729,
+            "Component": "MSIInstaller",
+            "Action": "Configuration failed"
+        }
+    ]
+}

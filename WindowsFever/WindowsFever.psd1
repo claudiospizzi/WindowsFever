@@ -52,12 +52,12 @@
 
     # Type files (.ps1xml) to be loaded when importing this module
     TypesToProcess = @(
-        'Resources\WindowsFever.Types.ps1xml'
+        'WindowsFever.Xml.Types.ps1xml'
     )
 
     # Format files (.ps1xml) to be loaded when importing this module
     FormatsToProcess = @(
-        'Resources\WindowsFever.Formats.ps1xml'
+        'WindowsFever.Xml.Format.ps1xml'
     )
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
@@ -73,7 +73,6 @@
         # Hosts File
         'Add-HostsEntry'
         'Get-HostsEntry'
-        'Remove-HostsEntry'
         # Watch Path
         'Start-WatchPath'
         'Stop-WatchPath'

@@ -32,4 +32,4 @@ Split-Path -Path $PSCommandPath |
 ## Module configuration
 
 # Module path
-New-Variable -Name 'ModulePath' -Value $PSScriptRoot
+$Script:ModulePath = $PSScriptRoot

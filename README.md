@@ -1,6 +1,7 @@
-[![PowerShell Gallery - WindowsFever](https://img.shields.io/badge/PowerShell_Gallery-WindowsFever-0072C6.svg)](https://www.powershellgallery.com/packages/WindowsFever)
-[![GitHub - Release](https://img.shields.io/github/release/claudiospizzi/WindowsFever.svg)](https://github.com/claudiospizzi/WindowsFever/releases)
-[![AppVeyor - master](https://img.shields.io/appveyor/ci/claudiospizzi/WindowsFever/master.svg)](https://ci.appveyor.com/project/claudiospizzi/WindowsFever/branch/master)
+[![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/WindowsFever?label=PowerShell%20Gallery&logo=PowerShell)](https://www.powershellgallery.com/packages/WindowsFever)
+[![Gallery Downloads](https://img.shields.io/powershellgallery/dt/WindowsFever?label=Downloads&logo=PowerShell)](https://www.powershellgallery.com/packages/WindowsFever)
+[![GitHub Release](https://img.shields.io/github/v/release/claudiospizzi/WindowsFever?label=Release&logo=GitHub&sort=semver)](https://github.com/claudiospizzi/WindowsFever/releases)
+[![GitHub CI Build](https://img.shields.io/github/actions/workflow/status/claudiospizzi/WindowsFever/ci.yml?label=CI%20Build&logo=GitHub)](https://github.com/claudiospizzi/WindowsFever/actions/workflows/ci.yml)
 
 # WindowsFever PowerShell Module
 

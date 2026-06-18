@@ -83,6 +83,11 @@ Stop-WatchPath -Path 'C:\Demo'
 * **Get-HostsEntry**  
   List all entries of the hosts file.
 
+### Connection Test
+
+* **Test-Internet**  
+  Test the internet connection by pinging local and public addresses, and testing DNS resolution and HTTPS connectivity.
+
 ## Versions
 
 Please find all versions in the [GitHub Releases] section and the release notes in the [CHANGELOG.md] file.

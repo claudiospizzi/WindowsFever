@@ -1,19 +1,21 @@
 ﻿<#
     .SYNOPSIS
-        .
+        Test the internet connection by pinging local and public addresses, and
+        testing DNS resolution and HTTPS connectivity.
 
     .DESCRIPTION
-        .
-
-    .INPUTS
-        .
-
-    .OUTPUTS
-        .
+        The Test-Internet function checks the internet connection by performing
+        the following tests:
+        1. Pings local IP addresses to test the network stack.
+        2. Pings default gateways to ensure connectivity to the local network.
+        3. Pings well-known public DNS servers to verify external connectivity.
+        4. Resolves domain names of popular websites to test DNS resolution.
+        5. Tests HTTPS connectivity to popular web services.
 
     .EXAMPLE
         PS C:\> Test-Internet
-        .
+        This command runs the Test-Internet function and returns the results of
+        the connectivity tests.
 
     .LINK
         https://github.com/claudiospizzi/WindowsFever
@@ -23,18 +25,17 @@ function Test-Internet
     [CmdletBinding()]
     param ()
 
-    $ipAddresses = @(Get-NetIPAddress -AddressFamily 'IPv4' -Type 'Unicast' | Where-Object { $_.PrefixOrigin -ne 'WellKnown' } | Sort-Object -Property 'IPAddress')
-    if ($ipAddresses.Count -eq 0)
-    {
-        throw 'No IP adresses found!'
-    }
+    # Ping local ip addresses to test the network stack
+    $ipAddresses = @('::1', '127.0.0.1')
+    $ipAddresses += @(Get-NetIPAddress -AddressFamily 'IPv4' -Type 'Unicast' | Where-Object { $_.PrefixOrigin -ne 'WellKnown' } | Select-Object -ExpandProperty 'IPAddress')
     foreach ($ipAddress in $ipAddresses)
     {
         [PSCustomObject] @{
-            Type   = 'IPAddress'
-            Test   = 'Ping'
-            Target = [System.String] $ipAddress.IPAddress
-            Result = Test-Connection -ComputerName $ipAddress.IPAddress -Count 1 -Quiet
+            Type     = 'LocalAddress'
+            Protocol = 'ICMP'
+            Service  = 'Ping'
+            Target   = [System.String] $ipAddress
+            Result   = Test-Connection -ComputerName $ipAddress -Count 1 -Quiet
         }
     }
 
@@ -46,32 +47,37 @@ function Test-Internet
     foreach ($defaultGateway in $defaultGateways)
     {
         [PSCustomObject] @{
-            Type   = 'DefaultGateway'
-            Target = [System.String] $defaultGateway.NextHop
-            Test   = 'Ping'
-            Result = Test-Connection -ComputerName $defaultGateway.NextHop -Count 1 -Quiet
+            Type     = 'DefaultGateway'
+            Protocol = 'ICMP'
+            Service  = 'Ping'
+            Target   = [System.String] $defaultGateway.NextHop
+            Result   = Test-Connection -ComputerName $defaultGateway.NextHop -Count 1 -Quiet
         }
     }
 
+    # Well-known public DNS servers
     $publicAddresses = '1.1.1.1', '8.8.8.8', '9.9.9.9'
     foreach ($publicAddress in $publicAddresses)
     {
         [PSCustomObject] @{
-            Type   = 'PublicAddress'
-            Target = [System.String] $publicAddress
-            Test   = 'Ping'
-            Result = Test-Connection -ComputerName $publicAddress -Count 1 -Quiet
+            Type     = 'PublicAddress'
+            Protocol = 'ICMP'
+            Service  = 'Ping'
+            Target   = [System.String] $publicAddress
+            Result   = Test-Connection -ComputerName $publicAddress -Count 1 -Quiet
         }
     }
 
-    $nameResolutions = 'microsoft.com', 'office.com', 'azure.com'
+    # Use different TLDs to test name resolution
+    $nameResolutions = 'iana.org', 'cloudflare.com', 'quad9.net'
     foreach ($nameResolution in $nameResolutions)
     {
         $result = [PSCustomObject] @{
-            Type   = 'PublicAddress'
-            Target = $nameResolution
-            Test   = 'DNS'
-            Result = ''
+            Type     = 'PublicAddress'
+            Protocol = 'UDP'
+            Service  = 'DNS'
+            Target   = $nameResolution
+            Result   = ''
         }
 
         try
@@ -87,17 +93,15 @@ function Test-Internet
         Write-Output $result
     }
 
-    $webServices = 'microsoft.com', 'office.com', 'azure.com'
+    $webServices = 'office.com', 'github.com', 'google.com', 'microsoft.com', 'cloudflare.com', 'quad9.net'
     foreach ($webService in $webServices)
     {
-        foreach ($port in 80, 443)
-        {
-            [PSCustomObject] @{
-                Type   = 'WebServices'
-                Target = '{0}:{1}' -f $webService, $port
-                Test   = 'TCP'
-                Result = Test-NetConnection -ComputerName $webService -Port $port -WarningAction 'SilentlyContinue' | Select-Object -ExpandProperty 'TcpTestSucceeded'
-            }
+        [PSCustomObject] @{
+            Type     = 'WebServices'
+            Protocol = 'TCP'
+            Service  = 'HTTPS'
+            Target   = '{0}' -f $webService
+            Result   = Test-NetConnection -ComputerName $webService -Port 443 -WarningAction 'SilentlyContinue' | Select-Object -ExpandProperty 'TcpTestSucceeded'
         }
     }
 }
